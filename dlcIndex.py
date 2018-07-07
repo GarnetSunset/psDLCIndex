@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import os, re, sys, time
+import os, re, time
 
 DLCList = []
 locationString = 'chromedriver.exe'
@@ -11,9 +11,6 @@ JP = "https://store.playstation.com/ja-jp/"
 EU = "https://store.playstation.com/en-gb/"
 US = "https://store.playstation.com/en-us/"
 addons = "/1?relationship=add-ons"
-
-reload(sys)
-sys.getdefaultencoding()
 
 ##UP is for US, EP is for EU, JP is for Japan##
 
@@ -56,9 +53,9 @@ for i in DLCList:
     for j in rights:
         productLocation = i.index('product')
         DLCID = i[productLocation+8:]
-        string = str(j)
-        text_file.write(DLCID + "\n" + string.strip() + "\n")
-        time.sleep(5)
+        lungs = j.text
+        string = lungs.encode('utf-8').strip()
+        text_file.write(DLCID + " | " + string + "\n")
 
 text_file.close()
 
