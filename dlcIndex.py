@@ -5,7 +5,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os, re, time
 
+def Remove(duplicate):
+    final_list = []
+    for num in duplicate:
+        if num not in final_list:
+            final_list.append(num)
+    return final_list
+
 DLCList = []
+DLCIter = 0
 locationString = 'chromedriver.exe'
 JP = "https://store.playstation.com/ja-jp/"
 EU = "https://store.playstation.com/en-gb/"
@@ -45,17 +53,20 @@ for link in soup.findAll('a', attrs={'href': re.compile("^https://")}):
     if "product" in link.get('href') and CUSA in link.get('href'):
         DLCList.append(link.get('href'))
 
+DLCList = Remove(DLCList)
+
 rights = soup.findAll('div', {'class': 'grid-cell__title'})
 
 text_file = open(titleID + ".txt", "w")
 
-for i in DLCList:
-    for j in rights:
-        productLocation = i.index('product')
-        DLCID = i[productLocation+8:]
-        lungs = j.text
-        string = lungs.encode('utf-8').strip()
-        text_file.write(DLCID + " | " + string + "\n")
+for j in rights:
+    yes = DLCList[DLCIter]
+    productLocation = yes.index('product')
+    DLCID = yes[productLocation+8:]
+    lungs = j.text
+    string = lungs.encode('utf-8').strip()
+    text_file.write(DLCID + " | " + string + "\n")
+    DLCIter += 1
 
 text_file.close()
 
