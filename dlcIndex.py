@@ -14,6 +14,9 @@ def Remove(duplicate):
 
 DLCList = []
 DLCIter = 0
+rights = []
+pageIter = 0
+pageNums = 2
 locationString = 'chromedriver.exe'
 JP = "https://store.playstation.com/ja-jp/"
 EU = "https://store.playstation.com/en-gb/"
@@ -49,13 +52,36 @@ requestRec = driver.page_source
 
 soup = BeautifulSoup(requestRec, 'lxml')
 
-for link in soup.findAll('a', attrs={'href': re.compile("^https://")}):
-    if "product" in link.get('href') and CUSA in link.get('href'):
-        DLCList.append(link.get('href'))
+try:
+    pages = str(soup.find('a', {'class': 'paginator-control__end paginator-control__arrow-navigation internal-app-link ember-view'}))
+    relationship = pages.index('relationship')
+    titleURL = pages.index(titleID)
+    pageNums = int(pages[titleURL+37:relationship-1])
+    pageNums = pageNums + 1
+except:
+    pass
+
+if(pageIter == pageNums):
+    for link in soup.findAll('a', attrs={'href': re.compile("^https://")}):
+        if "product" in link.get('href') and CUSA in link.get('href'):
+            DLCList.append(link.get('href'))
+    for name in soup.findAll('div', {'class': 'grid-cell__title'}):
+        rights.append(name)
+else:
+    while(pageIter != pageNums):
+        pageIter += 1
+        for link in soup.findAll('a', attrs={'href': re.compile("^https://")}):
+            if "product" in link.get('href') and CUSA in link.get('href'):
+                DLCList.append(link.get('href'))
+        for name in soup.findAll('div', {'class': 'grid-cell__title'}):
+            rights.append(name)
+        driver.get(URL+titleID+"/"+str(pageIter)+"?relationship=add-ons")
+        requestRec = driver.page_source
+        soup = BeautifulSoup(requestRec, 'lxml')
+        time.sleep(2)
 
 DLCList = Remove(DLCList)
-
-rights = soup.findAll('div', {'class': 'grid-cell__title'})
+rights = Remove(rights)
 
 text_file = open(titleID + ".txt", "w")
 
