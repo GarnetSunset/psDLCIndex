@@ -1,5 +1,5 @@
 # psDLCIndex
-Playstation Store DLC Index, got bored.
+Playstation Store DLC Indexer, and list generator.
 
 ## What is this?
  
