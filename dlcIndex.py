@@ -1,9 +1,5 @@
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import os, re, time
+import os, re, requests, time
 
 def Remove(duplicate):
     final_list = []
@@ -14,7 +10,6 @@ def Remove(duplicate):
 
 DLCList = []
 DLCIter = 0
-rights = []
 pageIter = 0
 pageNums = 2
 locationString = 'chromedriver.exe'
@@ -46,11 +41,11 @@ else:
 
 URLfull = URL + titleID + addons
 
-driver = webdriver.Chrome()
-driver.get(URLfull)
-requestRec = driver.page_source
+regexp = "\"Product\",\"name\":\"(.*?)\".*?sku\":\"(.*?)\""
+s = requests.Session()
+r = s.get(URLfull)
 
-soup = BeautifulSoup(requestRec, 'lxml')
+soup = BeautifulSoup(r, 'lxml')
 
 try:
     pages = str(soup.find('a', {'class': 'paginator-control__end paginator-control__arrow-navigation internal-app-link ember-view'}))
@@ -62,37 +57,29 @@ except:
     pass
 
 if(pageIter == pageNums):
-    for link in soup.findAll('a', attrs={'href': re.compile("^https://")}):
-        if "product" in link.get('href') and CUSA in link.get('href'):
-            DLCList.append(link.get('href'))
-    for name in soup.findAll('div', {'class': 'grid-cell__title'}):
-        rights.append(name)
+    pattern = re.findall(regexp, r.text)
+    for item in pattern:
+        DLCList.append(item)   
 else:
     while(pageIter != pageNums):
         pageIter += 1
-        for link in soup.findAll('a', attrs={'href': re.compile("^https://")}):
-            if "product" in link.get('href') and CUSA in link.get('href'):
-                DLCList.append(link.get('href'))
-        for name in soup.findAll('div', {'class': 'grid-cell__title'}):
-            rights.append(name)
-        driver.get(URL+titleID+"/"+str(pageIter)+"?relationship=add-ons")
-        requestRec = driver.page_source
-        soup = BeautifulSoup(requestRec, 'lxml')
+        pattern = re.findall(regexp, r.text)
+        for item in pattern:
+            DLCList.append(item)
+        r = s.get(URL+titleID+"/"+str(pageIter)+"?relationship=add-ons")
+        soup = BeautifulSoup(r, 'lxml')
         time.sleep(2)
 
 DLCList = Remove(DLCList)
-rights = Remove(rights)
 
 text_file = open(titleID + ".txt", "w")
 
-for j in rights:
-    yes = DLCList[DLCIter]
-    productLocation = yes.index('product')
-    DLCID = yes[productLocation+8:]
-    lungs = j.text
-    string = lungs.encode('utf-8').strip()
-    text_file.write(DLCID + " | " + string + "\n")
-    DLCIter += 1
+for item in DLCList:
+    productLocation = item.index(',')
+    DLCID = item[productLocation+2:]
+    Name = item[:productLocation-1]
+    NameID = Name.encode('utf-8').strip()
+    text_file.write(DLCID + " | " + NameID + "\n")
 
 text_file.close()
 
