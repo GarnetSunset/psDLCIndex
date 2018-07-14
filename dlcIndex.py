@@ -12,7 +12,6 @@ DLCList = []
 DLCIter = 0
 pageIter = 0
 pageNums = 2
-locationString = 'chromedriver.exe'
 JP = "https://store.playstation.com/ja-jp/"
 EU = "https://store.playstation.com/en-gb/"
 US = "https://store.playstation.com/en-us/"
@@ -42,10 +41,10 @@ else:
 URLfull = URL + titleID + addons
 
 regexp = "\"Product\",\"name\":\"(.*?)\".*?sku\":\"(.*?)\""
-s = requests.Session()
-r = s.get(URLfull)
+r = requests.get(URLfull)
+c = r.content
 
-soup = BeautifulSoup(r, 'lxml')
+soup = BeautifulSoup(c, 'lxml')
 
 try:
     pages = str(soup.find('a', {'class': 'paginator-control__end paginator-control__arrow-navigation internal-app-link ember-view'}))
@@ -66,8 +65,9 @@ else:
         pattern = re.findall(regexp, r.text)
         for item in pattern:
             DLCList.append(item)
-        r = s.get(URL+titleID+"/"+str(pageIter)+"?relationship=add-ons")
-        soup = BeautifulSoup(r, 'lxml')
+        r = requests.get(URL+titleID+"/"+str(pageIter)+"?relationship=add-ons")
+        c = r.content
+        soup = BeautifulSoup(c, 'lxml')
         time.sleep(2)
 
 DLCList = Remove(DLCList)
@@ -75,15 +75,16 @@ DLCList = Remove(DLCList)
 text_file = open(titleID + ".txt", "w")
 
 for item in DLCList:
-    productLocation = item.index(',')
-    DLCID = item[productLocation+2:]
-    Name = item[:productLocation-1]
-    NameID = Name.encode('utf-8').strip()
-    text_file.write(DLCID + " | " + NameID + "\n")
+    for small in item:
+        if DLCIter == 0:
+            Name = small
+            DLCIter += 1
+            NameID = Name.encode('utf-8').strip()
+        else:
+            DLCID = small
+            DLCIter = 0
+            DLCID = DLCID.encode('utf-8').strip()
+        if DLCIter == 0:
+            text_file.write(DLCID + " | " + NameID + "\n")
 
 text_file.close()
-
-driver.close()
-
-if os.name == 'nt':
-    os.system('taskkill /f /im chromedriver.exe')
