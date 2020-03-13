@@ -8,7 +8,5 @@ titleIDS of all DLC associated with them. This can then be funnelled into "myste
 
 ## How to use?
 
-Make sure you run "requirements.bat" if you're on windows, but then, just run the "dlcIndex.py" script and input the full title ID of the 
+Make sure you run "requirements.bat" if you're on windows, but then, just run the "dlcIndex.py" script and input the URL of the 
 app you wish to crawl. This can take a while so be patient. 
-
-When done, make sure to run mysteriouslink, with all the files required, which I can't link, in this directory. You should have a bunch of PKGs. 
