@@ -167,6 +167,8 @@ if DLCList:
     lain = lets.read()
     print(lain)
     lets.close()
+else:
+    print("No DLC for this app, mate")
     
 for item in DLCList:
     for small in item:
