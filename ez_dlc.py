@@ -136,7 +136,11 @@ os.system('PkgTool.exe sfo_setentry --value 01.00 --type utf8 --maxsize 8 fake_d
 print('----------------------------------------')
 
 ## build fpkg out of generated PG4 project file
-os.system('PkgTool.exe pkg_build fake_dlc_temp\\fake_dlc_project.gp4 fake_dlc_pkg')
+if os.path.isdir("fake_dlc_pkg/" + contentid[7:16]):
+	pass
+else:
+    os.mkdir('fake_dlc_pkg/' + contentid[7:16])
+os.system('PkgTool.exe pkg_build fake_dlc_temp\\fake_dlc_project.gp4 fake_dlc_pkg/' + contentid[7:16])
 
 ## be a good boy and clean up after
 shutil.rmtree('fake_dlc_temp')

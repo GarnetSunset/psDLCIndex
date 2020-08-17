@@ -7,84 +7,6 @@ except NameError: pass
 
 dragNDrop = ""
 
-def genPKG(CID, pkgName):
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    gen_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-    try:
-        contentid = CID
-        name = pkgName
-        titleid = contentid[7:16]
-    except:
-        print("Usage: {} {} {}".format(sys.argv[0], 'DLC_CID', '\"DLC_NAME\"'))
-        sys.exit(2)
-
-    if not os.path.exists('orbis-pub-cmd.exe'):
-        print("File \'orbis-pub-cmd.exe\' is missing from current directory!!")
-        sys.exit(2)
-        
-    if len(contentid) != 36:
-        print("DLC CID IS TOO LONG OR TOO SHORT, IT HAS TO BE 36 CHARACTERS LONG, FOR EXAMPLE 'UP9000-CUSA00900_00-SPEXPANSIONDLC03'")
-        sys.exit(2)
-
-    SFX_template = """<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-    <paramsfo>
-     <param key="ATTRIBUTE">0</param>
-     <param key="CATEGORY">ac</param>
-     <param key="CONTENT_ID">%s</param>
-     <param key="FORMAT">obs</param>
-     <param key="TITLE">%s</param>
-     <param key="TITLE_ID">%s</param>
-     <param key="VERSION">01.00</param>
-    </paramsfo>)""" % (contentid, name, titleid)
-
-    GP4_template = """<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-    <psproject fmt="gp4" version="1000">
-      <volume>
-        <volume_type>pkg_ps4_ac_nodata</volume_type>
-        <volume_id>PS4VOLUME</volume_id>
-        <volume_ts>%s</volume_ts>
-        <package content_id="%s" passcode="00000000000000000000000000000000"/>
-      </volume>
-      <files img_no="0">
-        <file targ_path="sce_sys/param.sfo" orig_path="%s\\fake_dlc_temp\sce_sys\param.sfo"/>
-      </files>
-      <rootdir>
-        <dir targ_name="sce_sys"/>
-      </rootdir>
-    </psproject>""" % (gen_time, contentid, current_dir)
-
-    x = safe_open_w('fake_dlc_temp/param_template.sfx')
-    x.write(SFX_template)
-    x.close()
-    x = safe_open_w('fake_dlc_temp/fake_dlc_project.gp4')
-    x.write(GP4_template)
-    x.close()
-
-    mkdir_p(os.path.dirname('fake_dlc_temp/sce_sys/'))
-    if os.path.isdir("fake_dlc_pkg"):
-        pass
-    else:
-        os.mkdir('fake_dlc_pkg')
-
-    subprocess.check_call(['orbis-pub-cmd.exe', 'sfo_create', 'fake_dlc_temp\param_template.sfx', 'fake_dlc_temp\sce_sys\param.sfo'])
-
-    subprocess.check_call(['orbis-pub-cmd.exe', 'img_create', '%s\\fake_dlc_temp\\fake_dlc_project.gp4' % current_dir, '%s\\fake_dlc_pkg\%s-A0000-V0100.pkg' % (current_dir, contentid)])
-
-    shutil.rmtree('fake_dlc_temp')
-
-def mkdir_p(path):
-    try:
-        os.makedirs(path)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else: raise
-
-def safe_open_w(path):
-    mkdir_p(os.path.dirname(path))
-    return open(path, 'w')
-
 def Remove(duplicate):
     final_list = []
     for num in duplicate:
@@ -168,7 +90,7 @@ text_file = open(packageName + ".txt", "w")
 if DLCList:
     lets = open('flair.txt', 'r')
     lain = lets.read()
-    print(lain)
+    print("Making fake DLCs!!!")
     lets.close()
 else:
     print("No DLC for this app, mate")
@@ -183,5 +105,5 @@ for item in DLCList:
             DLCIter = 0
         if DLCIter == 0:
             text_file.write(ProductURL + DLCID + " | " + Name + "\n")
-#           genPKG(DLCID, Name.encode('utf-8'))
+            os.system("ez_dlc.py " + ProductURL + DLCID)
 text_file.close()
