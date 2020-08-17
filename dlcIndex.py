@@ -182,6 +182,6 @@ for item in DLCList:
             DLCID = small
             DLCIter = 0
         if DLCIter == 0:
-            text_file.write(ProductURL + DLCID + "\n")
+            text_file.write(ProductURL + DLCID + " | " + Name + "\n")
 #           genPKG(DLCID, Name.encode('utf-8'))
 text_file.close()
