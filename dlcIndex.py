@@ -88,10 +88,7 @@ DLCList = Remove(DLCList)
 text_file = open(packageName + ".txt", "w")
 
 if DLCList:
-    lets = open('flair.txt', 'r')
-    lain = lets.read()
     print("Making fake DLCs!!!")
-    lets.close()
 else:
     print("No DLC for this app, mate")
     
