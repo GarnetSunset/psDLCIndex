@@ -18,6 +18,7 @@ DLCList = []
 DLCIter = 0
 pageIter = 0
 pageNums = 2
+EU = "https://store.playstation.com/en-gb/"
 JP = "https://store.playstation.com/ja-jp/"
 US = "https://store.playstation.com/en-us/"
 HK = "https://store.playstation.com/en-hk/"
@@ -42,9 +43,12 @@ letter = titleID[44]
 if(letter == "U"):
     URL = US + "grid/"
     ProductURL = US + "product/"
+#elif(letter == "E"):
+#    URL = RU + "grid/"
+#    ProductURL = RU + "product/"
 elif(letter == "E"):
-    URL = RU + "grid/"
-    ProductURL = RU + "product/"
+    URL = EU + "grid/"
+    ProductURL = EU + "product/"
 elif(letter == "H"):
     URL = HK + "grid/"
     ProductURL = HK + "product/"
