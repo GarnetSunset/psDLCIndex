@@ -97,9 +97,10 @@ DLCIter = 0
 pageIter = 0
 pageNums = 2
 JP = "https://store.playstation.com/ja-jp/"
-EU = "https://store.playstation.com/en-gb/"
 US = "https://store.playstation.com/en-us/"
 HK = "https://store.playstation.com/en-hk/"
+RU = "https://store.playstation.com/ru-ru/"
+
 addons = "/1?relationship=add-ons"
 
 ##UP is for US, EP is for EU, JP is for Japan##
@@ -120,8 +121,8 @@ if(letter == "U"):
     URL = US + "grid/"
     ProductURL = US + "product/"
 elif(letter == "E"):
-    URL = EU + "grid/"
-    ProductURL = EU + "product/"
+    URL = RU + "grid/"
+    ProductURL = RU + "product/"
 elif(letter == "H"):
     URL = HK + "grid/"
     ProductURL = HK + "product/"
@@ -137,7 +138,7 @@ c = r.content
 soup = BeautifulSoup(c, 'lxml')
 
 try:
-    pages = str(soup.findall('a', {'class': 'internal-app-link ember-view'}))
+    pages = str(soup.find('a', {'class': 'paginator-control__end paginator-control__arrow-navigation internal-app-link ember-view'}))
     relationship = pages.index('relationship')
     titleURL = pages.index(packageName)
     pageNums = int(pages[titleURL+37:relationship-1])
@@ -162,6 +163,8 @@ else:
 
 DLCList = Remove(DLCList)
 
+text_file = open(packageName + ".txt", "w")
+
 if DLCList:
     lets = open('flair.txt', 'r')
     lain = lets.read()
@@ -179,4 +182,6 @@ for item in DLCList:
             DLCID = small
             DLCIter = 0
         if DLCIter == 0:
-            genPKG(DLCID, Name.encode('utf-8'))
+            text_file.write(ProductURL + DLCID + "\n")
+#           genPKG(DLCID, Name.encode('utf-8'))
+text_file.close()
