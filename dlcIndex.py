@@ -89,7 +89,7 @@ else:
 
 DLCList = Remove(DLCList)
 
-text_file = open(packageName + ".txt", "w")
+# text_file = open(packageName + ".txt", "w")
 
 if DLCList:
     print("Making fake DLCs!!!")
@@ -105,6 +105,6 @@ for item in DLCList:
             DLCID = small
             DLCIter = 0
         if DLCIter == 0:
-            text_file.write(ProductURL + DLCID + " | " + Name + "\n")
+#            text_file.write(ProductURL + DLCID + " | " + Name + "\n")
             os.system("ez_dlc.py " + ProductURL + DLCID)
-text_file.close()
+# text_file.close()
