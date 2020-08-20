@@ -32,9 +32,9 @@ try: input = raw_input
 except NameError: pass
 
 if len(sys.argv) == 1:
-    titleID = input("Input the URL of the app you want\nIn the example format of:\nhttps://store.playstation.com/en-**/product/HP0700-CUSA00000_00-ENDOFTHEURL0\n>")
+    titleID = "https://store.playstation.com/ru-ru/product/" + input("Input the Content_ID of the app you want\nIn the example format of:\nEP0700-CUSA00000_00-ENDOFTHECID0\n>")
 else:
-    titleID = sys.argv[1]
+    titleID = "https://store.playstation.com/ru-ru/product/" + sys.argv[1]
 
 CUSA = titleID[51:60]
 packageName = titleID[44:]
@@ -43,12 +43,9 @@ letter = titleID[44]
 if(letter == "U"):
     URL = US + "grid/"
     ProductURL = US + "product/"
-#elif(letter == "E"):
-#    URL = RU + "grid/"
-#    ProductURL = RU + "product/"
 elif(letter == "E"):
-    URL = EU + "grid/"
-    ProductURL = EU + "product/"
+    URL = RU + "grid/"
+    ProductURL = RU + "product/"
 elif(letter == "H"):
     URL = HK + "grid/"
     ProductURL = HK + "product/"
