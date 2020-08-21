@@ -10,5 +10,5 @@ titleIDS of all DLC associated with them.
 
 ## How to use?
 
-Make sure you run "requirements.bat" if you're on windows, but then, just run the "dlcIndex.py" script and input the full title ID of the 
+Make sure you run "requirements.bat" if you're on windows, but then, just run the "dlcIndex.py" script and input the full url or Content_ID or CUSAxxxxx of the 
 app you wish to crawl. This can take a while so be patient. 
