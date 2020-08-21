@@ -18,57 +18,30 @@ DLCList = []
 DLCIter = 0
 pageIter = 0
 pageNums = 2
-EU = "https://store.playstation.com/en-gb/"
-JP = "https://store.playstation.com/ja-jp/"
 US = "https://store.playstation.com/en-us/"
-HK = "https://store.playstation.com/en-hk/"
-RU = "https://store.playstation.com/ru-ru/"
 
 addons = "/1?relationship=add-ons"
-
-##UP is for US, EP is for EU, JP is for Japan##
 
 try: input = raw_input
 except NameError: pass
 
 if len(sys.argv) == 1:
-    userinput = input("Input the URL, CUSA or Content_ID of the app you want\nIn the example format of:\nCUSA00000\nEP0700-CUSA00000_00-0000ENDOFTHECID0\nhttps://store.playstation.com/**-**/product/HP0700-CUSA00000_00-0000ENDOFTHEURL0\n>")
+    titleID = US + "product/NP1111-" + input("Input the CUSAXXXXX of the app you want\nIn the example format of:\nCUSA00000\n>") + "_00-1111111111111111"
 else:
-    userinput = sys.argv[1]
+    titleID = US + "product/NP1111-" + sys.argv[1] + "_00-1111111111111111"
 
-if len(userinput) == 9:
-    userinput = EU + "product/NP1111-" + userinput + "_00-1111111111111111"
-    r = requests.get(userinput)
-    userinput = r.url
-    packageName = userinput[44:]
-    letter = packageName[0]
-elif len(userinput) == 36:
-    packageName = userinput
-    letter = packageName[0]
-else:
-    packageName = userinput[44:]
-    letter = packageName[0]
+r = requests.get(titleID)
+titleID = r.url
+print("Looks like your game is located here:\n" + titleID)
+packageName = titleID[44:]
 
-if(letter == "U"):
-    URL = US + "grid/"
-    ProductURL = US + "product/"
-elif(letter == "E"):
-    URL = EU + "grid/"
-    ProductURL = EU + "product/"
-elif(letter == "H"):
-    URL = HK + "grid/"
-    ProductURL = HK + "product/"
-else:
-    URL = JP + "grid/"
-    ProductURL = JP + "product/"
-
-print("Looks like your game is located here:\n" + ProductURL + packageName)
+URL = US + "grid/"
+ProductURL = US + "product/"
 
 URLfull = URL + packageName + addons
 regexp = "\"Product\",\"name\":\"(.*?)\".*?sku\":\"(.*?)\""
 r = requests.get(URLfull)
 c = r.content
-print("Looks like your DLCs are located here:\n" + URLfull)
 
 soup = BeautifulSoup(c, 'lxml')
 
@@ -98,8 +71,6 @@ else:
 
 DLCList = Remove(DLCList)
 
-# text_file = open(packageName + ".txt", "w")
-
 if DLCList:
     print("Making fake DLCs!!!")
 else:
@@ -114,6 +85,4 @@ for item in DLCList:
             DLCID = small
             DLCIter = 0
         if DLCIter == 0:
-#            text_file.write(ProductURL + DLCID + " | " + Name + "\n")
             os.system("ez_dlc.py " + ProductURL + DLCID)
-# text_file.close()
