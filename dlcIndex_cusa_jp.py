@@ -18,44 +18,30 @@ DLCList = []
 DLCIter = 0
 pageIter = 0
 pageNums = 2
-EU = "https://store.playstation.com/en-gb/"
 JP = "https://store.playstation.com/ja-jp/"
-US = "https://store.playstation.com/en-us/"
-HK = "https://store.playstation.com/en-hk/"
-RU = "https://store.playstation.com/ru-ru/"
 
 addons = "/1?relationship=add-ons"
-
-##UP is for US, EP is for EU, JP is for Japan##
 
 try: input = raw_input
 except NameError: pass
 
 if len(sys.argv) == 1:
-    packageName = input("Input the Content_ID of the app you want\nIn the example format of:\nEP0700-CUSA00000_00-ENDOFTHECID0\n>")
+    titleID = JP + "product/NP1111-" + input("Input the CUSAXXXXX of the app you want\nIn the example format of:\nCUSA00000\n>") + "_00-1111111111111111"
 else:
-    packageName = sys.argv[1]
+    titleID = JP + "product/NP1111-" + sys.argv[1] + "_00-1111111111111111"
 
-letter = packageName[0]
+r = requests.get(titleID)
+titleID = r.url
+print("Looks like your game is located here:\n" + titleID)
+packageName = titleID[44:]
 
-if(letter == "U"):
-    URL = US + "grid/"
-    ProductURL = US + "product/"
-elif(letter == "E"):
-    URL = EU + "grid/"
-    ProductURL = EU + "product/"
-elif(letter == "H"):
-    URL = HK + "grid/"
-    ProductURL = HK + "product/"
-else:
-    URL = JP + "grid/"
-    ProductURL = JP + "product/"
+URL = JP + "grid/"
+ProductURL = JP + "product/"
 
 URLfull = URL + packageName + addons
 regexp = "\"Product\",\"name\":\"(.*?)\".*?sku\":\"(.*?)\""
 r = requests.get(URLfull)
 c = r.content
-print("Looks like your DLCs are located here:\n" + URLfull)
 
 soup = BeautifulSoup(c, 'lxml')
 

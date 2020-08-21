@@ -32,11 +32,12 @@ try: input = raw_input
 except NameError: pass
 
 if len(sys.argv) == 1:
-    packageName = input("Input the Content_ID of the app you want\nIn the example format of:\nEP0700-CUSA00000_00-ENDOFTHECID0\n>")
+    titleID = input("Input the URL of the app you want\nIn the example format of:\nhttps://store.playstation.com/en-**/product/HP0700-CUSA00000_00-ENDOFTHEURL0\n>")
 else:
-    packageName = sys.argv[1]
+    titleID = sys.argv[1]
 
-letter = packageName[0]
+packageName = titleID[44:]
+letter = titleID[44]
 
 if(letter == "U"):
     URL = US + "grid/"
@@ -85,6 +86,8 @@ else:
 
 DLCList = Remove(DLCList)
 
+# text_file = open(packageName + ".txt", "w")
+
 if DLCList:
     print("Making fake DLCs!!!")
 else:
@@ -99,4 +102,6 @@ for item in DLCList:
             DLCID = small
             DLCIter = 0
         if DLCIter == 0:
+#            text_file.write(ProductURL + DLCID + " | " + Name + "\n")
             os.system("ez_dlc.py " + ProductURL + DLCID)
+# text_file.close()
