@@ -18,6 +18,7 @@ DLCList = []
 DLCIter = 0
 pageIter = 0
 pageNums = 2
+URL = 0
 EU = "https://store.playstation.com/en-gb/"
 JP = "https://store.playstation.com/ja-jp/"
 US = "https://store.playstation.com/en-us/"
@@ -47,24 +48,25 @@ elif len(userinput) == 36:
     letter = packageName[0]
 else:
     packageName = userinput[44:]
-    letter = packageName[0]
+    URL = userinput[0:36] + "grid/"
+    ProductURL = userinput[0:44]
 
-if(letter == "U"):
-    URL = US + "grid/"
-    ProductURL = US + "product/"
-elif(letter == "E"):
-    URL = EU + "grid/"
-    ProductURL = EU + "product/"
-elif(letter == "H"):
-    URL = HK + "grid/"
-    ProductURL = HK + "product/"
-else:
-    URL = JP + "grid/"
-    ProductURL = JP + "product/"
-
-print("Looks like your game is located here:\n" + ProductURL + packageName)
+if URL == 0:
+    if(letter == "U"):
+        URL = US + "grid/"
+        ProductURL = US + "product/"
+    elif(letter == "E"):
+        URL = EU + "grid/"
+        ProductURL = EU + "product/"
+    elif(letter == "H"):
+        URL = HK + "grid/"
+        ProductURL = HK + "product/"
+    else:
+        URL = JP + "grid/"
+        ProductURL = JP + "product/"
 
 URLfull = URL + packageName + addons
+print("Looks like your game is located here:\n" + ProductURL + packageName)
 regexp = "\"Product\",\"name\":\"(.*?)\".*?sku\":\"(.*?)\""
 r = requests.get(URLfull)
 c = r.content
