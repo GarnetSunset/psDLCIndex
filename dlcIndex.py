@@ -33,7 +33,7 @@ try: input = raw_input
 except NameError: pass
 
 if len(sys.argv) == 1:
-    userinput = input("Input the URL, CUSA or Content_ID of the app you want\nIn the example format of:\nCUSA00000\nEP0700-CUSA00000_00-0000ENDOFTHECID0\nhttps://store.playstation.com/**-**/product/HP0700-CUSA00000_00-0000ENDOFTHEURL0\n>")
+    userinput = input("Input the CUSAxxxxx, Content_ID or URL of the app you want\nIn the example format of:\nCUSA00000 - for EU store\nCUSA00000j - for JP, u - for US, h - for HK, r - for RU store\nEP0700-CUSA00000_00-0000ENDOFTHECID0\nhttps://store.playstation.com/**-**/product/HP0700-CUSA00000_00-0000ENDOFTHEURL0\n>")
 else:
     userinput = sys.argv[1]
 
@@ -43,6 +43,25 @@ if len(userinput) == 9:
     userinput = r.url
     packageName = userinput[44:]
     letter = packageName[0]
+elif len(userinput) == 10:
+    if(userinput[9] == "j"):
+        userinput = JP + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        letter = "J"
+    elif(userinput[9] == "u"):
+        userinput = US + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        letter = "U"
+    elif(userinput[9] == "h"):
+        userinput = HK + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        letter = "H"
+    elif(userinput[9] == "r"):
+        userinput = RU + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        letter = "R"
+    else:
+        userinput = EU + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        letter = "E"
+    r = requests.get(userinput)
+    userinput = r.url
+    packageName = userinput[44:]
 elif len(userinput) == 36:
     packageName = userinput
     letter = packageName[0]
@@ -58,6 +77,9 @@ if URL == 0:
     elif(letter == "E"):
         URL = EU + "grid/"
         ProductURL = EU + "product/"
+    elif(letter == "R"):
+        URL = RU + "grid/"
+        ProductURL = RU + "product/"
     elif(letter == "H"):
         URL = HK + "grid/"
         ProductURL = HK + "product/"
