@@ -19,7 +19,7 @@ DLCIter = 0
 pageIter = 0
 pageNums = 2
 URL = 0
-EU = "https://store.playstation.com/en-gb/"
+EU = "https://store.playstation.com/ru-ru/"
 JP = "https://store.playstation.com/ja-jp/"
 US = "https://store.playstation.com/en-us/"
 HK = "https://store.playstation.com/en-hk/"
@@ -38,26 +38,26 @@ else:
     userinput = sys.argv[1]
 
 if len(userinput) == 9:
-    userinput = EU + "product/NP1111-" + userinput + "_00-1111111111111111"
+    userinput = EU + "product/NP1111-" + userinput + "_00-1111111111111111?smcid=psapp"
     r = requests.get(userinput)
     userinput = r.url
     packageName = userinput[44:]
     letter = packageName[0]
 elif len(userinput) == 10:
     if(userinput[9] == "j"):
-        userinput = JP + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        userinput = JP + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111?smcid=psapp"
         letter = "J"
     elif(userinput[9] == "u"):
-        userinput = US + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        userinput = US + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111?smcid=psapp"
         letter = "U"
     elif(userinput[9] == "h"):
-        userinput = HK + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        userinput = HK + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111?smcid=psapp"
         letter = "H"
     elif(userinput[9] == "r"):
-        userinput = RU + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        userinput = RU + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111?smcid=psapp"
         letter = "R"
     else:
-        userinput = EU + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111"
+        userinput = EU + "product/NP1111-" + userinput[0:9] + "_00-1111111111111111?smcid=psapp"
         letter = "E"
     r = requests.get(userinput)
     userinput = r.url
@@ -115,7 +115,7 @@ else:
         pattern = re.findall(regexp, r.text)
         for item in pattern:
             DLCList.append(item)
-        r = requests.get(URL+packageName+"/"+str(pageIter)+"?relationship=add-ons")
+        r = requests.get(URL+packageName+"/"+str(pageIter)+"?relationship=add-ons?smcid=psapp")
         c = r.content
         soup = BeautifulSoup(c, 'lxml')
         time.sleep(2)
