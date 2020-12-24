@@ -25,7 +25,7 @@ US = "https://store.playstation.com/en-us/"
 HK = "https://store.playstation.com/en-hk/"
 RU = "https://store.playstation.com/ru-ru/"
 
-addons = "/1?relationship=add-ons"
+addons = "/1?relationship=add-ons?smcid=psapp"
 
 ##UP is for US, EP is for EU, JP is for Japan##
 
@@ -63,10 +63,10 @@ elif len(userinput) == 10:
     userinput = r.url
     packageName = userinput[44:]
 elif len(userinput) == 36:
-    packageName = userinput
+    packageName = userinput + "?smcid=psapp"
     letter = packageName[0]
 else:
-    packageName = userinput[44:]
+    packageName = userinput[44:] + "?smcid=psapp"
     URL = userinput[0:36] + "grid/"
     ProductURL = userinput[0:44]
 
