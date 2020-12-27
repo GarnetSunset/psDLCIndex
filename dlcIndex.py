@@ -25,7 +25,7 @@ US = "https://store.playstation.com/en-us/"
 HK = "https://store.playstation.com/en-hk/"
 RU = "https://store.playstation.com/ru-ru/"
 
-addons = "/1?relationship=add-ons?smcid=psapp"
+addons = "/1?gameContentType=addons&smcid=psapp"
 
 ##UP is for US, EP is for EU, JP is for Japan##
 
@@ -41,7 +41,7 @@ if len(userinput) == 9:
     userinput = EU + "product/NP1111-" + userinput + "_00-1111111111111111?smcid=psapp"
     r = requests.get(userinput)
     userinput = r.url
-    packageName = userinput[44:]
+    packageName = userinput[44:80]
     letter = packageName[0]
 elif len(userinput) == 10:
     if(userinput[9] == "j"):
@@ -61,12 +61,12 @@ elif len(userinput) == 10:
         letter = "E"
     r = requests.get(userinput)
     userinput = r.url
-    packageName = userinput[44:]
+    packageName = userinput[44:80]
 elif len(userinput) == 36:
-    packageName = userinput + "?smcid=psapp"
+    packageName = userinput
     letter = packageName[0]
 else:
-    packageName = userinput[44:] + "?smcid=psapp"
+    packageName = userinput[44:]
     URL = userinput[0:36] + "grid/"
     ProductURL = userinput[0:44]
 
@@ -98,7 +98,7 @@ soup = BeautifulSoup(c, 'lxml')
 
 try:
     pages = str(soup.find('a', {'class': 'paginator-control__end paginator-control__arrow-navigation internal-app-link ember-view'}))
-    relationship = pages.index('relationship')
+    relationship = pages.index('gameContentType')
     titleURL = pages.index(packageName)
     pageNums = int(pages[titleURL+37:relationship-1])
     pageNums = pageNums + 1
@@ -115,7 +115,7 @@ else:
         pattern = re.findall(regexp, r.text)
         for item in pattern:
             DLCList.append(item)
-        r = requests.get(URL+packageName+"/"+str(pageIter)+"?relationship=add-ons?smcid=psapp")
+        r = requests.get(URL+packageName+"/"+str(pageIter)+"?gameContentType=addons&smcid=psapp")
         c = r.content
         soup = BeautifulSoup(c, 'lxml')
         time.sleep(2)
