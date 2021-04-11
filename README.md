@@ -5,6 +5,9 @@ Adding stuff|bugs to the code - [DeniZz](https://github.com/krugdenis)
 # psDLCIndex
 Playstation Store DLC Indexer, and list generator.
 
+# HELP NEEDED!!!!!!!!!
+If you know a way to get DLC for a given title, please reach me at GarnetSunset#3854 so we can implement it. This tool was recently broken by the recent PSN change, if you can help me and denis here find a new method to query the DLC, PLEASE reach out. 
+
 ## What is this?
 This is a script that will go through a playstation store entry for a certain title, which is given at runtime, and get the titleIDS of all DLC associated with them. 
 
