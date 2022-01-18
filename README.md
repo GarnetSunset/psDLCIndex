@@ -14,6 +14,9 @@ You can pass the URL of the software you're trying to generate for example:
 
 ```python dlcIndex.py https://store.playstation.com/en-us/product/UP0177-CUSA13186_00-JUDGMENTRYUGAENG```
 
+##### Dependencies: Requests for Python
+```pip install requests```
+
 ### Reminder!
 
 This script can only create flags for DLC that are empty DLCs. 
