@@ -151,3 +151,5 @@ crashlytics-build.properties
 fabric.properties
 
 *.xml
+
+fake_*/
