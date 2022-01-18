@@ -24,11 +24,10 @@ region = URL.split("/")[3]
 contentID = URL.split("/")[5]
 
 chihiro_base_url = f"https://store.playstation.com/store/api/chihiro/00_09_000/container/{store_code_mappings[region]}/999/{contentID}?relationship=ADD-ONS%27"
-
 response = requests.get(chihiro_base_url)
-
 item = response.json()
 print(chihiro_base_url)
+
 dlcList = {}
 for link in item["links"]:
     dlcList[link["name"]] = link["id"]
