@@ -13,3 +13,8 @@ and get the titleIDS of all DLC associated with them.
 You can pass the URL of the software you're trying to generate for example:
 
 ```https://store.playstation.com/en-us/product/UP0177-CUSA13186_00-JUDGMENTRYUGAENG```
+
+### Reminder!
+
+This script can only create flags for DLC that are empty DLCs. 
+If your DLC contains data, it will not work. 
