@@ -12,7 +12,7 @@ and get the titleIDS of all DLC associated with them.
 ## How to use?
 You can pass the URL of the software you're trying to generate for example:
 
-```https://store.playstation.com/en-us/product/UP0177-CUSA13186_00-JUDGMENTRYUGAENG```
+```python dlcIndex.py https://store.playstation.com/en-us/product/UP0177-CUSA13186_00-JUDGMENTRYUGAENG```
 
 ### Reminder!
 
