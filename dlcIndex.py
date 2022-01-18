@@ -1,24 +1,37 @@
 import sys
+from pprint import pprint
 
-try:
-    input = raw_input
-except NameError:
-    pass
+import requests
 
 store_code_mappings = {
-    "DE/de": ["de-de", "E"],
-    "NL/nl": ["nl-nl", "E"],
-    "US/en": ["us-en", "U"],
-    "JP/jp": ["jp-jp", "J"],
+    "de-de": "DE/de",
+    "gb-de": "GB/en",
+    "se-en": "SE/en",
+    "en-us": "US/en",
+    "ja-jp": "JP/ja",
 }
-
-# https://store.playstation.com/en-us/product/UP0177-CUSA27065_00-9569812838891386
 
 if len(sys.argv) == 1:
     URL = input(
         "Input the URL of the game you want the DLC for in this format:\nhttps://store.playstation.com/**-**/product/HP0700-CUSA00000_00-0000ENDOFTHEURL0\n>"
     )
+elif len(sys.argv) > 1:
+    URL = sys.argv[1]
+else:
+    Exception("No URL provided")
 
 region = URL.split("/")[3]
 contentID = URL.split("/")[5]
-print(contentID)
+
+chihiro_base_url = f"https://store.playstation.com/store/api/chihiro/00_09_000/container/{store_code_mappings[region]}/999/{contentID}?relationship=ADD-ONS%27"
+
+response = requests.get(chihiro_base_url)
+
+item = response.json()
+print(chihiro_base_url)
+dlcList = {}
+for link in item["links"]:
+    dlcList[link["name"]] = link["id"]
+if dlcList == {}:
+    exit("No DLC found")
+pprint(dlcList)
