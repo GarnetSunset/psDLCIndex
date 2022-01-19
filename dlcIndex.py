@@ -91,17 +91,18 @@ item = response.json()
 
 dlcList = {}
 for link in item["links"]:
-    for entitlement in link["default_sku"]["entitlements"]:
-        try:
-            if entitlement["packages"]["size"] < 5000000:
-                dlcList[link["name"]] = link["id"]
-        except TypeError:
-            pass
-        try:
-            if entitlement["packages"][0]["size"] < 5000000:
-                dlcList[link["name"]] = link["id"]
-        except IndexError:
-            pass
+    if "default_sku" in link:
+        for entitlement in link["default_sku"]["entitlements"]:
+            try:
+                if entitlement["packages"]["size"] < 5000000:
+                    dlcList[link["name"]] = link["id"]
+            except TypeError:
+                pass
+            try:
+                if entitlement["packages"][0]["size"] < 5000000:
+                    dlcList[link["name"]] = link["id"]
+            except IndexError:
+                pass
 
 if dlcList == {}:
     exit("No DLC found")
