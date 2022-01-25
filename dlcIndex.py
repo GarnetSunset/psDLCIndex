@@ -1,11 +1,10 @@
 import sys
+import requests
 from datetime import datetime
 from os import makedirs, system
 from shutil import rmtree
 from tkinter import filedialog
 from urllib.request import urlretrieve
-
-import requests as requests
 
 
 def gen_gp4(content_name, full_id, pkg_location):
@@ -114,7 +113,6 @@ if len(sys.argv) < 2:
 
     except ModuleNotFoundError:
         print("No tkinter found, proceeding in text only mode")
-
 
 if len(sys.argv) == 1 and URL is None:
     URL = input(
