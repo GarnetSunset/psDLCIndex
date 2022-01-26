@@ -98,7 +98,7 @@ if len(sys.argv) < 2:
             URL = text_input_field.get(1.0, "end-1c")
             root.destroy()
 
-        text_input_field = tk.Text(root, height=1, width=20)
+        text_input_field = tk.Text(root, height=1, width=95)
         text_input_field.pack()
         printButton = tk.Button(root, text="Next", command=get_url)
         printButton.pack()
