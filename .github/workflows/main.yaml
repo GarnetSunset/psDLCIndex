@@ -17,19 +17,21 @@ jobs:
     - name: Package Application
       uses: JackMcKew/pyinstaller-action-linux@main
       with:
-        path: src
+        path: .
+        spec: dlcIndex.spec
 
     - uses: actions/upload-artifact@v2
       with:
         name: dlcIndex-linux
-        path: src/dist/linux
+        path: ./dist/linux
 
     - name: Package Application
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
-        path: src
+        path: .
+        spec: dlcIndex.spec
 
     - uses: actions/upload-artifact@v2
       with:
         name: dlcIndex-windows
-        path: src/dist/windows
+        path: ./dist/windows
