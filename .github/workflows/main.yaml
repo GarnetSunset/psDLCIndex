@@ -18,7 +18,6 @@ jobs:
       uses: JackMcKew/pyinstaller-action-linux@main
       with:
         path: .
-        spec: dlcIndex.spec
 
     - uses: actions/upload-artifact@v2
       with:
@@ -29,7 +28,6 @@ jobs:
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
         path: .
-        spec: dlcIndex.spec
 
     - uses: actions/upload-artifact@v2
       with:
