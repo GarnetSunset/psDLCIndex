@@ -21,7 +21,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: name-of-artifact
+        name: dlcIndex-linux
         path: src/dist/linux
 
     - name: Package Application
@@ -31,5 +31,5 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: name-of-artifact
+        name: dlcIndex-windows
         path: src/dist/windows
