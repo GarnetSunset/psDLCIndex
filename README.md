@@ -14,10 +14,12 @@ You can pass the URL of the software you're trying to generate for example:
 
 ```python dlcIndex.py https://store.playstation.com/en-us/product/UP0177-CUSA13186_00-JUDGMENTRYUGAENG```
 
+[Download the latest build here](https://github.com/GarnetSunset/psDLCIndex/actions/workflows/main.yaml)
+
 ##### Dependencies: Requests for Python
 ```pip install requests```
 
 ### Reminder!
 
 This script can only create flags for DLC that are empty DLCs. 
-If your DLC contains data, it will not work. 
+If your DLC contains data, it will not work.
