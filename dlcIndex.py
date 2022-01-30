@@ -1,28 +1,31 @@
 import sys
-import requests
 from datetime import datetime
 from os import makedirs, system
 from shutil import rmtree
 from tkinter import filedialog
 from urllib.request import urlretrieve
 
+import requests
 
-def gen_gp4(content_name, full_id, pkg_location):
-    gp4_template = """<?xml version="1.0"?>
-        <psproject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" fmt="gp4" version="1000">
-          <volume>
-            <volume_type>pkg_ps4_ac_data</volume_type>
-            <volume_ts>%s</volume_ts>
-            <package content_id="%s" passcode="00000000000000000000000000000000" entitlement_key="00000000000000000000000000000000" />
-          </volume>
-          <files img_no="0">
-            <file targ_path="sce_sys/icon0.png" orig_path="sce_sys\icon0.png" />
-            <file targ_path="sce_sys/param.sfo" orig_path="sce_sys\param.sfo" />
-          </files>
-          <rootdir>
-            <dir targ_name="sce_sys" />
-          </rootdir>
-        </psproject>""" % (
+
+def gen_gp4(name, full_id, pkg_location):
+
+    name = f'"{name}"'
+
+    if sys.platform == "linux" or sys.platform == "linux2":
+        pkg_editor = "./PkgTool.Core"
+    elif sys.platform == "win32":
+        pkg_editor = "PkgTool.exe"
+    else:
+        exit("Unsupported platform")
+
+    gp4_template = """<?xml version="1.0"?> <psproject xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" fmt="gp4" version="1000"> <volume>
+    <volume_type>pkg_ps4_ac_data</volume_type> <volume_ts>%s</volume_ts> <package content_id="%s"
+    passcode="00000000000000000000000000000000" entitlement_key="00000000000000000000000000000000" /> </volume>
+    <files img_no="0"> <file targ_path="sce_sys/icon0.png" orig_path="sce_sys/icon0.png" /> <file
+    targ_path="sce_sys/param.sfo" orig_path="sce_sys/param.sfo" /> </files> <rootdir> <dir targ_name="sce_sys" />
+    </rootdir> </psproject>""" % (
         gen_time,
         full_id,
     )
@@ -35,38 +38,41 @@ def gen_gp4(content_name, full_id, pkg_location):
     x.close()
 
     urlretrieve("https://i.imgur.com/JeaTFEX.png", "fake_dlc_temp/sce_sys/icon0.png")
-    system("PkgTool.exe sfo_new fake_dlc_temp\sce_sys\param.sfo")
+    system(f"{pkg_editor} sfo_new fake_dlc_temp/sce_sys/param.sfo")
     system(
-        "PkgTool.exe sfo_setentry --value 0x00000000 --type integer --maxsize 4 fake_dlc_temp\sce_sys\param.sfo ATTRIBUTE"
+        f"{pkg_editor} sfo_setentry --value 0x00000000 --type integer --maxsize 4 fake_dlc_temp/sce_sys/param.sfo "
+        f"ATTRIBUTE "
     )
     system(
-        "PkgTool.exe sfo_setentry --value ac --type utf8 --maxsize 4 fake_dlc_temp\sce_sys\param.sfo CATEGORY"
+        f"{pkg_editor} sfo_setentry --value ac --type utf8 --maxsize 4 fake_dlc_temp/sce_sys/param.sfo CATEGORY"
     )
     system(
-        "PkgTool.exe sfo_setentry --value "
-        + full_id
-        + " --type utf8 --maxsize 48 fake_dlc_temp\sce_sys\param.sfo CONTENT_ID"
+        f"{pkg_editor} sfo_setentry --value {full_id} --type utf8 --maxsize 48 fake_dlc_temp/sce_sys/param.sfo "
+        f"CONTENT_ID "
     )
     system(
-        "PkgTool.exe sfo_setentry --value obs --type utf8 --maxsize 4 fake_dlc_temp\sce_sys\param.sfo FORMAT"
+        f"{pkg_editor} sfo_setentry --value obs --type utf8 --maxsize 4 fake_dlc_temp/sce_sys/param.sfo FORMAT"
     )
     system(
-        'PkgTool.exe sfo_setentry --value "'
-        + content_name
-        + '" --type utf8 --maxsize 128 fake_dlc_temp\sce_sys\param.sfo TITLE'
+        f"{pkg_editor} sfo_setentry --value {name} --type utf8 --maxsize 128 fake_dlc_temp/sce_sys/param.sfo "
+        f"TITLE "
     )
     system(
-        "PkgTool.exe sfo_setentry --value "
-        + full_id[7:16]
-        + " --type utf8 --maxsize 12 fake_dlc_temp\sce_sys\param.sfo TITLE_ID"
+        f"{pkg_editor} sfo_setentry --value {full_id[7:16]} --type utf8 --maxsize 12 fake_dlc_temp/sce_sys/param.sfo "
+        f"TITLE_ID "
     )
     system(
-        "PkgTool.exe sfo_setentry --value 01.00 --type utf8 --maxsize 8 fake_dlc_temp\sce_sys\param.sfo VERSION"
+        f"{pkg_editor} sfo_setentry --value 01.00 --type utf8 --maxsize 8 fake_dlc_temp/sce_sys/param.sfo VERSION"
     )
+    system(
+        f"{pkg_editor} pkg_build fake_dlc_temp/fake_dlc_project.gp4 {pkg_location}/{full_id[7:16]}"
+    )
+    rmtree("fake_dlc_temp")
+    print(f"Created DLC for {name} with contentID {content_id}")
 
 
 URL = None
-pkg_location = "fake_dlc_pkg"
+final_location = "fake_dlc_pkg"
 
 store_code_mappings = {
     "de-de": "DE/de",
@@ -106,7 +112,7 @@ if len(sys.argv) < 2:
         root = tk.Tk()
         root.withdraw()
         root.update()
-        pkg_location = filedialog.askdirectory(
+        final_location = filedialog.askdirectory(
             title="Select the directory where you want the DLCs to be stored"
         )
         root.destroy()
@@ -152,10 +158,5 @@ for link in item["links"]:
 if dlcList == {}:
     exit("No DLC found")
 
-for name, content_id in dlcList.items():
-    gen_gp4(name, content_id, pkg_location)
-    system(
-        f"PkgTool.exe pkg_build fake_dlc_temp\\fake_dlc_project.gp4 {pkg_location}/{content_id[7:16]}"
-    )
-    rmtree("fake_dlc_temp")
-    print(f"Created DLC for {name} with contentID {content_id}")
+for dlc_name, content_id in dlcList.items():
+    gen_gp4(dlc_name, content_id, final_location)

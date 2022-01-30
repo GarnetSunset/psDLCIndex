@@ -19,6 +19,12 @@ jobs:
       with:
         path: .
 
+    - name: Copy the pkgtool (Linux) file to the dist folder.
+        run: |
+          chmod +x PkgTool.Core
+          cp -r PkgTool.Core dist/linux
+          done
+
     - uses: actions/upload-artifact@v2
       with:
         name: dlcIndex-linux
@@ -28,6 +34,11 @@ jobs:
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
         path: .
+
+    - name: Copy the pkgtool (Windows) file to the dist folder.
+        run: |
+          cp -r PkgTool.exe dist/windows
+          done
 
     - uses: actions/upload-artifact@v2
       with:
