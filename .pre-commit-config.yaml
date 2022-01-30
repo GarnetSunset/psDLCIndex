@@ -8,5 +8,4 @@ repos:
       hooks:
         - id: check-added-large-files
           args: ['--maxkb=80000']
-        - id: trailing-whitespace
-        - id: check-xml
+
