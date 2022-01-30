@@ -19,7 +19,7 @@ jobs:
       with:
         path: .
 
-    - run: chmod +x PkgTool.Core && cp -r PkgTool.Core dist/linux
+    - run: chmod +x PkgTool.Core && cp -r PkgTool.Core dist/linux/dlcIndex
 
     - uses: actions/upload-artifact@v2
       with:
@@ -31,7 +31,7 @@ jobs:
       with:
         path: .
 
-    - run: cp -r PkgTool.exe dist/windows
+    - run: cp -r PkgTool.exe dist/windows/dlcIndex
 
     - uses: actions/upload-artifact@v2
       with:
