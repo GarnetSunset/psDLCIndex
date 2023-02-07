@@ -9,7 +9,6 @@ import requests
 
 
 def gen_gp4(name, full_id, pkg_location):
-
     name = f'"{name}"'
 
     if sys.platform == "linux" or sys.platform == "linux2":
