@@ -59,7 +59,7 @@ def get_url(URL=None):
         URL = simpledialog.askstring(
             "Input",
             "Input the URL of the game you want the DLC for in this format:\n"
-            "https://store.playstation.com/**-**/product/HP0700-CUSA00000_00-0000ENDOFTHEURL0"
+            "https://store.playstation.com/**-**/product/HP0700-CUSA00000_00-0000ENDOFTHEURL0",
         )
 
     return URL
